@@ -1,0 +1,4 @@
+# HTTP Server
+server:
+  port: 9002   # HTTP (Tomcat) port
+

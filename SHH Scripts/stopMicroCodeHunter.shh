@@ -1,0 +1,9 @@
+#!/bin/sh
+if apid=$(pgrep -f codehunter-1.0.0-SNAPSHOT.jar)
+then
+    echo "Running, pid is $apid"
+else
+    echo "Stopped"
+    cd /folder/location
+    java -jar codehunter-1.0.0-SNAPSHOT.jar &
+fi

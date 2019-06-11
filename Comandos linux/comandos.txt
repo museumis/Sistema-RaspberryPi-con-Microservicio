@@ -1,0 +1,63 @@
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+INSTALACION INICIAL
+sudo apt-get install mysql-server 
+creamos una contraseña para el root 
+	>>>> sudo mysql_secure_installation 
+	>>>> sudo mysql -u root -p 
+	>>>> GRANT ALL PRIVILEGES ON mydb.* TO 'root'@'localhost' IDENTIFIED BY 'miContrasenaRoot';
+sudo nano /etc/apache2/apache2.conf 
+	>>> incluir al final de documento la siguiente linea=> Include /etc/phpmyadmin/apache.conf
+sudo /etc/init.d/apache2 restart
+sudo apt-get install phpmyadmin
+ 
+
+DESINSTALAR TODO
+sudo apt-get --purge remove apache2*
+sudo apt-get --purge remove mysql*
+sudo apt-get --purge remove phpmyadmin*
+sudo apt-get --purge remove mariadb*
+sudo apt-get --purge remove php*
+sudo apt autoremove
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+CONFIGURAR BASE DE DATOS MARIA DB
+mysql -u root -p miUsuario miBaseDatos --reconecter
+sudo mysql --password
+
+create database miBaseDatos; -- Create the new database
+create user 'miUser'@'%' identified by 'miContrasena'; -- Crear usuario
+grant all on miBaseDatos.* to 'miUser'@'%'; -- Dar todos los permisos al usuario
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'192.168.0.162'  IDENTIFIED BY 'miUser' WITH GRANT OPTION;
+
+SELECT User, Host FROM mysql.user WHERE Host <> '192.168.0.162';
+
+mysql -h 192.168.0.162 -u root -p miUser miBaseDatos
+mysql -h 192.168.0.162 -u root -p
+
+CONFIGURACION DEL USUARIO LOCAL EN RED LOCAL (Esperar a tener fallos para realizar esta operación)
+cd etc/mysql/mariadb.conf.d/
+sudo nano 50-server.cnf
+sudo service mysql restart
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+CONFIGURAR RED LOCAL DE RPI
+cd /etc/mysql
+sudo nano my.cnf
+	>>>>Comentar = bind-address = 127.0.0.1    
+******** my.cnf config - https://stackoverflow.com/questions/1420839/cant-connect-to-mysql-server-error-111
+
+OTROS
+sudo nano /etc/mysql/mariadb.cnf
+sudo nano /etc/mysql/my.cnf
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ip rasp: 192.168.0.162
+ip phpMyAdmin: http:\\192.168.0.162\phpmyadmin
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+CONECTOR JDBC DE MARIA DB
+//c = DriverManager.getConnection("jdbc:mariadb://192.168.0.162/miBaseDatos?user=miUser&password=miContrasena");
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+REINICIAR RPI
+sudo systemctl restart apache2
+CAMBIAR NOMBRE USUARIO RPI
+https://elblogdelazaro.gitlab.io/post/2017-12-21-eliminar-usuario-pi.html	
